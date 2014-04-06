@@ -20,7 +20,7 @@
         row.forEach (tile, column_index) =>
           td = @tiles[row_index][column_index]
 
-          classes = "tile tile-#{tile}"
+          classes = "mark mark-#{tile}"
 
           if tile_mark = td.children()[0]
             tile_mark = $(tile_mark)

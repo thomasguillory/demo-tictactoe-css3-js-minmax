@@ -15,10 +15,11 @@
       unless player != @nextPlayer
         unless @board[row][column] != null
           @board[row][column] = player
-          $('body').trigger('renderGame')
+          $('body').trigger 'renderGame'
           @toNextPlayer()
 
     toNextPlayer: =>
       idx = @constructor.PLAYERS.indexOf(@nextPlayer) + 1
       idx = 0 if idx >= @constructor.PLAYERS.length
       @nextPlayer = @constructor.PLAYERS[idx]
+      $('body').trigger 'nextPlayer', [@nextPlayer]

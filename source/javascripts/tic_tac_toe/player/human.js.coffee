@@ -1,9 +1,8 @@
 @module 'TicTacToe.Player', ->
   class @Human extends @Base
     constructor: (options) ->
-      @symbol  = options.symbol
+      super
       @view    = options.view
-      @game    = options.game
 
       @view.tiles.forEach (row, row_index) =>
         row.forEach (td, column_index) =>

@@ -12,10 +12,10 @@
         $(tr).find('td').each (column_index, td) =>
           row.push $(td)
 
-
       @render()
+      $('body').on 'renderGame', @render
 
-    render: ->
+    render: =>
       @game.board.forEach (row, row_index) =>
         row.forEach (tile, column_index) =>
           td = @tiles[row_index][column_index]

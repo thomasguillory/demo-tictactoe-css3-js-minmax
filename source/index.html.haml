@@ -5,15 +5,32 @@ title: TicTacToe Party!
 %table.game
   %tr
     %td
-      .mark.mark-O O
-    %td
-      .mark.mark-X X
-    %td
-  %tr
-    %td
     %td
     %td
   %tr
     %td
     %td
     %td
+  %tr
+    %td
+    %td
+    %td
+
+:coffee
+  # Model
+  game = new @TicTacToe.Game
+
+  # View
+  view = new @TicTacToe.View
+    el: $('.game')
+    game: game
+
+  # Players
+  new @TicTacToe.Player.Human
+    symbol: 'X'
+    view: view
+    game: game
+
+  new @TicTacToe.Player.AI
+    symbol: 'O'
+    game: game

@@ -1,0 +1,2 @@
+@module 'TicTacToe', ->
+  class @Game

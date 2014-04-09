@@ -1,3 +1,5 @@
+#= require ./ai/minmaxNode
+
 @module 'TicTacToe.Player', ->
   class @AI extends @Base
     constructor: (options) ->
@@ -6,4 +8,6 @@
         @play() if nextPlayer == @symbol
 
     play: =>
-      console.log "Should play NOW"
+      minmaxRootNode = new TicTacToe.Player.AImod.minmaxNode @game.board, @symbol
+      result = minmaxRootNode.value()
+      @game.play @symbol, result.row, result.column

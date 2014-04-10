@@ -10,4 +10,5 @@
     play: =>
       minmaxRootNode = new TicTacToe.Player.AImod.minmaxNode @game.board, @symbol
       result = minmaxRootNode.value()
+      console.log result
       @game.play @symbol, result.row, result.column

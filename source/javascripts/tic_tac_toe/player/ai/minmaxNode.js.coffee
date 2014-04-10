@@ -1,54 +1,84 @@
 @module 'TicTacToe.Player.AImod', ->
   class @minmaxNode
+    @MIN      = -999
+    @MAX      = 999
     @MAXDEPTH = 9
     constructor: (board, @player, @minOrMax = 'max', @currentDepth = 0) ->
       @board      = @_copyBoard board
 
     value: =>
-      if @_isBoardFull()
+      if winner = @_isBoardWon()
+        if winner == 'O'
+          # console.log "Found #{@constructor.MAX} (victory) @depth #{this.currentDepth}"
+        else
+          # console.log "Defeat"
+          # console.log @board
+          # console.log "Found #{@constructor.MIN} (defeat) @depth #{this.currentDepth}"
         return {
-          value:  0
-          row:    null
-          column: null
+          value:    if winner == 'O' then @constructor.MAX else @constructor.MIN
+          row:      null
+          column:   null
+          children: []
         }
 
-      if winner = @_isBoardWon()
+      if @_isBoardFull()
         return {
-          value:  (winner == @player) - (winner != @player)
-          row:    null
-          column: null
+          value:    0
+          row:      null
+          column:   null
+          children: []
         }
 
       if @currentDepth < @constructor.MAXDEPTH
 
-        min = 999
-        max = -999
-        minmax_row  = null
-        minmax_col  = null
+        min = @constructor.MAX + 1
+        max = @constructor.MIN - 1
+        min_row  = null
+        min_col  = null
+        max_row  = null
+        max_col  = null
 
         # Generate children
-        childrenNodes = []
+        children = []
+        # console.log "Looking for #{this.minOrMax} @depth #{this.currentDepth}"
         @board.forEach (row, row_index) =>
           row.forEach (tile, column_index) =>
             if tile == null
               childBoard = @_copyBoard @board
               childBoard[row_index][column_index] = @player
-              minOrMax = if @minOrMax == 'min' then 'max' else 'min'
+              player    = if @player    == 'O'   then 'X' else 'O'
+              minOrMax  = if @minOrMax  == 'min' then 'max' else 'min'
 
-              node = new @constructor childBoard, @player, minOrMax, @currentDepth + 1
+              node = new @constructor childBoard, player, minOrMax, @currentDepth + 1
               result = node.value()
+              children.push result
               if result.value < min or result.value > max
-                min         = result.value if result.value < min
-                max         = result.value if result.value > max
-                minmax_row  = row_index
-                minmax_col  = column_index
+                if result.value < min
+                  min      = result.value
+                  min_row  = row_index
+                  min_col  = column_index
+                if result.value > max
+                  max      = result.value
+                  max_row  = row_index
+                  max_col  = column_index
 
 
-        return {
-          value:  if @minOrMax == 'min' then min else max
-          row:    minmax_row
-          column: minmax_col
-        }
+        if @minOrMax == 'min'
+          # console.log "Found #{min} @depth #{this.currentDepth}"
+          return {
+            value:    min
+            row:      min_row
+            column:   min_col
+            children: children
+          }
+        else
+          # console.log "Found #{max} @depth #{this.currentDepth}"
+          return {
+            value:    max
+            row:      max_row
+            column:   max_col
+            children: children
+          }
 
       else
         return {
@@ -59,6 +89,9 @@
 
     eval: =>
       Math.random()
+
+    _evalPattern: (pattern) =>
+
 
     _copyBoard: (board) =>
       ret = []
@@ -89,3 +122,5 @@
         return @board[0][0]
       if @board[2][0] == @board[1][1] == @board[0][2]
         return @board[2][0]
+
+      return false

@@ -1,13 +1,29 @@
+.index
+  background: black
+
 table.game
   font-size: 5em
   margin: 1em auto 0
+  border: solid 4px grey
 
   td
     width: 2em
     height: 2em
-    border: solid 1px black
+    border: solid 1px grey
     text-align: center
     cursor: pointer
+    background: white
 
     .mark
       font-weight: bold
+
+    .mark-X
+      background-image: url('/images/android.png')
+      height: 160px
+      width: 160px
+      text-indent: -999em
+    .mark-O
+      background-image: url('/images/ruby.png')
+      height: 160px
+      width: 160px
+      text-indent: -999em

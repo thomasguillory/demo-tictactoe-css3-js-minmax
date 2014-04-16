@@ -10,5 +10,11 @@
     play: =>
       minmaxRootNode = new TicTacToe.Player.AImod.minmaxNode @game.board, @symbol
       result = minmaxRootNode.value()
-      console.log result
-      @game.play @symbol, result.row, result.column
+
+      if result.row? and  result.column?
+        @game.play @symbol, result.row, result.column
+      else
+        alert('Egality Try Again')
+
+      if result.value == 999
+        alert('Ruby Win')
